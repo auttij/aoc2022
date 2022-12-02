@@ -16,7 +16,7 @@ def exercise2(arr):
 	pass
 
 def main(args=None):
-	arr = init(path.dirname(__file__), inputs.read_file_to_arr, args)
+	arr = init(path.dirname(__file__), inputs.read_to_str, args)
 	exercise1(arr.copy())
 	exercise2(arr.copy())
 
