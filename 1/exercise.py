@@ -8,18 +8,18 @@ from aocHelpers.init import init
 @timer
 @print_result
 def exercise1(arr):
-	return max([sum(map(int, i.split())) for i in arr.split("\n\n")])
+	return max(map(sum, arr))
 
 @timer
 @print_result
 def exercise2(arr):
-	elves = sorted([sum(map(int, i.split())) for i in arr.split("\n\n")])
+	elves =  sorted(map(sum, arr))
 	return sum(elves[-3:])
 
 def main(args=None):
-	input = init(path.dirname(__file__), inputs.read_str, args)
-	exercise1(input)
-	exercise2(input)
+	arr = init(path.dirname(__file__), inputs.read_to_2d_int_arr, args)
+	exercise1(arr.copy())
+	exercise2(arr.copy())
 
 if __name__ == "__main__":
 	main(argv[1:])
