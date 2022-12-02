@@ -14,7 +14,7 @@ def mapper(l):
 def exercise1(arr):
 	output = 0
 	for a, b in map(mapper, arr):
-		if b - 1 == a or (b == 1 and a == 3):
+		if (b + 1) % 3 + 1 == a:
 			output += 6
 		if b == a:
 			output += 3
@@ -28,17 +28,11 @@ def exercise2(arr):
 	output = 0
 	for a, b in map(mapper, arr):
 		if b == 1:
-			played = a - 1
-			if played == 0:
-				played = 3
-			output += played
+			output += (a + 1) % 3 + 1
 		if b == 2:
 			output += a + 3
 		if b == 3:
-			played = a + 1
-			if played == 4:
-				played = 1
-			output += played + 6
+			output += a % 3 + 1 + 6
 	return output
 
 def main(args=None):
