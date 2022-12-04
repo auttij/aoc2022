@@ -9,10 +9,8 @@ from aocHelpers.init import init
 @print_result
 def exercise1(arr):
 	count = 0
-	for a, b, c, d in arr:
-		if a <= c and c <= b and a <= d and d <= b:
-			count += 1
-		elif c <= a and a <= d and c <= b and b <= d:
+	for s1, e1, s2, e2 in arr:
+		if s1 <= s2 and e2 <= e1 or s2 <= s1 and e1 <= e2:
 			count += 1
 	return count
 
@@ -20,10 +18,11 @@ def exercise1(arr):
 @print_result
 def exercise2(arr):
 	count = 0
-	for a, b, c, d in arr:
-		if (a <= c and c <= b) or (a <= d and d <= b):
-			count += 1
-		elif (c <= a and a <= d) or (c <= b and b <= d):
+	for s1, e1, s2, e2 in arr:
+		# (s2,e2) overlaps (s1,e1) if it is not completely to the left or completely to the right
+		#          s2 -- e2
+		#    e1              s1
+		if not (e1 < s2 or s1 > e2):
 			count += 1
 	return count
 
