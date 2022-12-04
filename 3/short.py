@@ -5,7 +5,7 @@ def priority(c):
     return ord(c) - ord('a') + 1 if c.islower() else ord(c) - ord('A') + 27
 
 def intersect(*ls):
-    return list(set.intersection(*map(set, ls))).pop()
+    return next(iter(set.intersection(*map(set, ls))))
 
 def err(line):
     f, s = line[:len(line)//2], line[len(line)//2:]
