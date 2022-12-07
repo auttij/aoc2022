@@ -40,6 +40,7 @@ def exercise2(dirs):
 				ms = ds
 	return ms
 
+@timer
 def main(args=None):
 	arr = init(os.path.dirname(__file__), inputs.read_to_str_arr, args)
 	i = 0

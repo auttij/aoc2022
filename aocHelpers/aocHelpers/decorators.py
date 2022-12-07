@@ -10,7 +10,7 @@ def timer(func):
 		result = func(*args, **kwargs)
 		end = perf_counter()
 
-		logging.info(f"{end - start} seconds")
+		logging.info(f"{(end - start )* 1000} ms")
 		
 		return result
 	return wrap
