@@ -11,7 +11,6 @@ def updateCrt(crt, cycle, x):
     c = cycle - 1
     if (c % 40) in [x - 1, x, x + 1]:
         crt[c // 40][c % 40] = '#'
-    return crt
 
 def main(input):
     WIDTH = 40
@@ -25,10 +24,10 @@ def main(input):
         if cmd == 'addx':
             cycle += 1
             signal += updateSignal(cycle - 1, x)
-            crt = updateCrt(crt, cycle - 1, x)
+            updateCrt(crt, cycle - 1, x)
 
         signal += updateSignal(cycle, x)
-        crt = updateCrt(crt, cycle, x)
+        updateCrt(crt, cycle, x)
         x += amt
 
     # output
