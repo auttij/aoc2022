@@ -5,7 +5,7 @@ from os import path
 
 def get_arg_parser():
 	parser = argparse.ArgumentParser()
-	parser.add_argument('input', type=int, default=1, choices=range(1,4), help='Used input file number')
+	parser.add_argument('input', type=int, default=1, choices=range(1,5), help='Used input file number')
 	parser.add_argument('--logging', '-l', type = str.lower, default="info", choices=["debug", "info", "warn", "error", "critical"])
 	return parser
 
