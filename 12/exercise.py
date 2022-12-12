@@ -4,7 +4,7 @@ from os import path
 from aocHelpers import inputs
 from aocHelpers.decorators import timer, print_result
 from aocHelpers.init import init
-from collections import deque
+from aocHelpers.helpers import bfs
 
 def parseGrid(arr):
 	aList = []
@@ -22,36 +22,18 @@ def parseGrid(arr):
 				aList.append((i, j))
 	return arr, start, end, aList
 
-def bfs(grid, start, end):
-    q = deque()
-    q.append((start, 0))
-    seen = set()
-    while q:
-        pos, dist = q.popleft()
-        if pos == end:
-            return dist
-        if pos in seen:
-            continue
-        seen.add(pos)
-        x, y = pos
-        for dx, dy in ((0, 1), (1, 0), (0, -1), (-1, 0)):
-            if (
-                0 <= x + dx < len(grid)
-                and 0 <= y + dy < len(grid[0])
-                and ord(grid[x + dx][y + dy]) - ord(grid[x][y]) <= 1
-            ):
-                q.append(((x + dx, y + dy), dist + 1))
-    return float("inf")
+def comparisonFn(a, b):
+	return ord(a) - ord(b) <= 1
 
 @timer
 @print_result
 def exercise1(GRID, START, END, _):
-	return bfs(GRID, START, END)
+	return bfs(GRID, START, END, comparisonFn)
 
 @timer
 @print_result
 def exercise2(GRID, _, END, A_LIST):
-	out = [bfs(GRID, a, END) for a in A_LIST]
+	out = [bfs(GRID, a, END, comparisonFn) for a in A_LIST]
 	return min(out)
 
 def main(args=None):
