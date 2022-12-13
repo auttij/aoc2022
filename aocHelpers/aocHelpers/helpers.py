@@ -50,3 +50,15 @@ def dfs(grid, start, end, cmp):
 				and cmp(grid[x + dx][y + dy], grid[x][y])
 			):
 				stack.append((x + dx, y + dy))
+
+def binarySearch(arr, target):
+	lo, hi = 0, len(arr) - 1
+	while lo <= hi:
+		m = (lo + hi) // 2
+		if arr[m] < target:
+			lo = m + 1
+		elif arr[m] > target:
+			hi = m - 1
+		else:
+			return m
+	return -1
