@@ -23,7 +23,7 @@ def parseGrid(arr):
 	return arr, start, end, aList
 
 def comparisonFn(a, b):
-	return ord(a) - ord(b) <= 1
+	return -2 <= ord(a) - ord(b) <= 1
 
 @timer
 @print_result
@@ -36,6 +36,7 @@ def exercise2(GRID, _, END, A_LIST):
 	out = [bfs(GRID, a, END, comparisonFn) for a in A_LIST]
 	return min(out)
 
+@timer
 def main(args=None):
 	arr = init(path.dirname(__file__), inputs.read_to_str_arr, args)
 	input = list(map(list, arr.copy()))
