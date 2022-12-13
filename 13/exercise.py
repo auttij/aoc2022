@@ -25,13 +25,7 @@ def compare(a, b):
 @timer
 @print_result
 def exercise1(arr):
-	correctPairs = []
-	for i, pair in enumerate(arr):
-		a, b = pair
-		c = compare(a, b)
-		if c == 1:
-			correctPairs.append(i + 1)
-	return sum(correctPairs)
+	return sum([i for i, (a, b) in enumerate(arr, start=1) if compare(a, b) == 1])
 
 @timer
 @print_result
