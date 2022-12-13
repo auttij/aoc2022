@@ -6,6 +6,7 @@ from aocHelpers.decorators import timer, print_result
 from aocHelpers.init import init
 from itertools import chain
 from functools import cmp_to_key
+from json import loads
 
 def compare(a, b):
 	if not a or not b:
@@ -40,7 +41,7 @@ def exercise2(arr):
 @timer
 def main(args=None):
 	s = init(path.dirname(__file__), inputs.read_to_str, args)
-	arr = [[eval(i) for i in line.split()] for line in s.split('\n\n')]
+	arr = [[loads(i) for i in line.split()] for line in s.split('\n\n')]
 
 	exercise1(arr.copy())
 	exercise2(arr.copy())
