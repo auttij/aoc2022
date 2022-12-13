@@ -5,6 +5,7 @@ from aocHelpers import inputs
 from aocHelpers.decorators import timer, print_result
 from aocHelpers.init import init
 from itertools import chain
+from functools import cmp_to_key
 
 def compare(a, b):
 	if not a or not b:
@@ -32,8 +33,6 @@ def exercise1(arr):
 			correctPairs.append(i + 1)
 	return sum(correctPairs)
 
-from functools import cmp_to_key
-
 @timer
 @print_result
 def exercise2(arr):
@@ -43,6 +42,7 @@ def exercise2(arr):
 	s = sorted(input, key=cmp_to_key(compare), reverse=True)
 	return (s.index(decoders[0]) + 1) * (s.index(decoders[1]) + 1)
 
+@timer
 def main(args=None):
 	s = init(path.dirname(__file__), inputs.read_to_str, args)
 	pairs = s.split('\n\n')
