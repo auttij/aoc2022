@@ -12,20 +12,21 @@ def compare(a, b):
 		return bool(len(b)) - bool(len(a))
 
 	av, bv, v = a[0], b[0], 0
-	if type(av) == type(bv) == int:
-		v = max(-1, min(1, bv - av))
-	elif type(av) == type(bv) == list:
-		v = compare(av, bv)
-	elif type(av) == list and type(bv) == int:
-		v = compare(av, [bv])
-	elif type(av) == int and type(bv) == list:
-		v = compare([av], bv)
+	match (av, bv):
+		case (list(), list()):
+			v = compare(av, bv)
+		case (list(), int()):
+			v = compare(av, [bv])
+		case (int(), list()):
+			v = compare([av], bv)
+		case (int(), int()):
+			v = max(-1, min(1, bv - av))
 	return v if v != 0 else compare(a[1:], b[1:])
 
 @timer
 @print_result
 def exercise1(arr):
-	return sum([i for i, (a, b) in enumerate(arr, start=1) if compare(a, b) == 1])
+	return sum(i for i, (a, b) in enumerate(arr, start=1) if compare(a, b) == 1)
 
 @timer
 @print_result
@@ -39,8 +40,7 @@ def exercise2(arr):
 @timer
 def main(args=None):
 	s = init(path.dirname(__file__), inputs.read_to_str, args)
-	pairs = s.split('\n\n')
-	arr = [[eval(i) for i in line.split()] for line in pairs]
+	arr = [[eval(i) for i in line.split()] for line in s.split('\n\n')]
 
 	exercise1(arr.copy())
 	exercise2(arr.copy())
