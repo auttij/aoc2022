@@ -6,41 +6,20 @@ from aocHelpers.decorators import timer, print_result
 from aocHelpers.init import init
 from itertools import chain
 
-def cmpList(a, b):
-	if len(a) == 0 and len(b) > 0:
-		return 1
-	elif len(a) > 0 and len(b) == 0:
-		return -1
-	elif len(a) == len(b) == 0:
-		return 0
+def compare(a, b):
+	if not a or not b:
+		return bool(len(b)) - bool(len(a))
 
-	av, bv = a[0], b[0]
-	# print(av, bv)
+	av, bv, v = a[0], b[0], 0
 	if type(av) == type(bv) == int:
-		if av < bv:
-			# print(a, b, av, bv)
-			return 1
-		elif av > bv:
-			return -1
-		else:
-			return cmpList(a[1:], b[1:])
+		v = max(-1, min(1, bv - av))
 	elif type(av) == type(bv) == list:
-		v = cmpList(av, bv)
-		if v in [-1, 1]:
-			return v
-		return cmpList(a[1:], b[1:])
+		v = compare(av, bv)
 	elif type(av) == list and type(bv) == int:
-		v = cmpList(av, [bv])
-		if v in [-1, 1]:
-			return v
-		return cmpList(a[1:], b[1:])
-	
+		v = compare(av, [bv])
 	elif type(av) == int and type(bv) == list:
-		v = cmpList([av], bv)
-		if v in [-1, 1]:
-			return v
-		return cmpList(a[1:], b[1:])
-	# print('err')
+		v = compare([av], bv)
+	return v if v != 0 else compare(a[1:], b[1:])
 
 @timer
 @print_result
@@ -48,11 +27,9 @@ def exercise1(arr):
 	correctPairs = []
 	for i, pair in enumerate(arr):
 		a, b = pair
-		c = cmpList(a, b)
-		# print('comparison', c)
+		c = compare(a, b)
 		if c == 1:
 			correctPairs.append(i + 1)
-	# print(correctPairs)
 	return sum(correctPairs)
 
 from functools import cmp_to_key
@@ -63,14 +40,13 @@ def exercise2(arr):
 	decoders = [[[2]], [[6]]]
 	input = list(chain(*arr))
 	input.extend(decoders)
-	s = sorted(input, key=cmp_to_key(cmpList), reverse=True)
+	s = sorted(input, key=cmp_to_key(compare), reverse=True)
 	return (s.index(decoders[0]) + 1) * (s.index(decoders[1]) + 1)
 
 def main(args=None):
 	s = init(path.dirname(__file__), inputs.read_to_str, args)
 	pairs = s.split('\n\n')
 	arr = [[eval(i) for i in line.split()] for line in pairs]
-	# print(arr)
 
 	exercise1(arr.copy())
 	exercise2(arr.copy())
