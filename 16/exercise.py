@@ -28,42 +28,36 @@ def floydWarshall(targets, pressures, ind):
 def exercise(arr):
 	targets = { a: c for a, b, c in arr } 
 	pressures = { a: int(b) for a, b, c in arr }
-	nonZeroPressures = { a: int(b) for a, b, c in arr if int(b) > 0 }
 	ind = { a: i for i, (a, b, c) in enumerate(arr)}
 	dist = floydWarshall(targets, pressures, ind)
+	
+	start = list(targets.keys()).index('AA')
+	targets = [c for a, b, c in arr]
+	pressures = [int(b) for a, b, c in arr]
 
 	def chooseOne(xl):
 		for i in range(len(xl)):
-			yield [xl[i], xl[:i] + xl[i+1:]]
+			yield (xl[i], xl[:i] + xl[i+1:])
 
-	@lru_cache(maxsize=4096)
+	def gen(cur, rest, time):
+		for i, rr in chooseOne(rest):
+			if dist[cur][i] < time:
+				yield pressures[i] * (time - dist[cur][i] - 1) + dfs(i, rr, time - dist[cur][i] - 1)
+					
+	@lru_cache(maxsize=256000)
 	def dfs(cur, rest, time):
-		return max(
-			chain(
-				[0], 
-				(
-					pressures[v] * (time - dist[cur][i] - 1) + dfs(i, rr, time - dist[cur][i] - 1) 
-					for (i, v), rr in chooseOne(rest) 
-					if dist[cur][i] < time
-				)
-			)
-		)
+		return max(gen(cur, rest, time), default=0)
 
-	@lru_cache(maxsize=512)
+	def gen2(cur, rest, time):
+		for i, rr in chooseOne(rest):
+			if dist[cur][i] < time:
+				yield pressures[i] * (time - dist[cur][i] - 1) + dfs2(i, rr, time - dist[cur][i] - 1)
+
+	@lru_cache(maxsize=256000)
 	def dfs2(cur, rest, time):
-		return max(
-			chain(
-				[dfs(start, rest, 26)], 
-				(
-					pressures[v] * (time - dist[cur][i] - 1) + dfs2(i, rr, time - dist[cur][i] - 1) 
-					for (i, v), rr in chooseOne(rest) 
-					if dist[cur][i] < time
-				)
-			)
-		)
+		return max(gen2(cur, rest, time), default=dfs(start, rest, 26))
 
-	start = list(targets.keys()).index('AA')
-	l = tuple(filter(lambda x: pressures[x[1]] > 0, enumerate(pressures)))
+	l = tuple(filter(lambda x: pressures[x] > 0, map(lambda x: x[0], enumerate(pressures))))
 	
 	print('1', dfs(start, l, 30))
 	print('2', dfs2(start, l, 26))
