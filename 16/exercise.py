@@ -14,11 +14,11 @@ def floydWarshall(targets):
 		for target in targs:
 			dist[vi][target] = 1
 		dist[vi][vi] = 0
-		for k in range(1, len(targets)):
-			for i in range(1, len(targets)):		
-				for j in range(1, len(targets)):
-					if dist[i][j] > dist[i][k] + dist[k][j]:
-						dist[i][j] = dist[i][k] + dist[k][j]
+	for k in range(1, len(targets)):
+		for i in range(1, len(targets)):		
+			for j in range(1, len(targets)):
+				if dist[i][j] > dist[i][k] + dist[k][j]:
+					dist[i][j] = dist[i][k] + dist[k][j]
 	return dist
 
 def exercise(arr):
