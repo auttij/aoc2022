@@ -8,32 +8,27 @@ from aocHelpers.helpers import dfs
 from functools import lru_cache
 from itertools import chain
 
-
-def floydWarshall(targets, pressures, ind):
-	dist = [[999999 for i in range(len(pressures))] for j in range(len(pressures))]
-	for vertex in targets:
-		targs = targets[vertex]
+def floydWarshall(targets):
+	dist = [[999999 for i in range(len(targets))] for j in range(len(targets))]
+	for vi, targs in enumerate(targets):
 		for target in targs:
-			dist[ind[vertex]][ind[target]] = 1
-		dist[ind[vertex]][ind[vertex]] = 0
-		for k in range(1, len(pressures)):
-			for i in range(1, len(pressures)):		
-				for j in range(1, len(pressures)):
+			dist[vi][target] = 1
+		dist[vi][vi] = 0
+		for k in range(1, len(targets)):
+			for i in range(1, len(targets)):		
+				for j in range(1, len(targets)):
 					if dist[i][j] > dist[i][k] + dist[k][j]:
 						dist[i][j] = dist[i][k] + dist[k][j]
 	return dist
-	
-@timer
-@print_result
+
 def exercise(arr):
-	targets = { a: c for a, b, c in arr } 
-	pressures = { a: int(b) for a, b, c in arr }
 	ind = { a: i for i, (a, b, c) in enumerate(arr)}
-	dist = floydWarshall(targets, pressures, ind)
-	
-	start = list(targets.keys()).index('AA')
-	targets = [c for a, b, c in arr]
+	targets = [[ind[ci] for ci in c] for a, b, c in arr]
 	pressures = [int(b) for a, b, c in arr]
+
+	dist = floydWarshall(targets)
+	start = ind['AA']
+	l = tuple(filter(lambda x: pressures[x] > 0, map(lambda x: x[0], enumerate(pressures))))
 
 	def chooseOne(xl):
 		for i in range(len(xl)):
@@ -48,6 +43,7 @@ def exercise(arr):
 	def dfs(cur, rest, time):
 		return max(gen(cur, rest, time), default=0)
 
+
 	def gen2(cur, rest, time):
 		for i, rr in chooseOne(rest):
 			if dist[cur][i] < time:
@@ -57,16 +53,18 @@ def exercise(arr):
 	def dfs2(cur, rest, time):
 		return max(gen2(cur, rest, time), default=dfs(start, rest, 26))
 
-	l = tuple(filter(lambda x: pressures[x] > 0, map(lambda x: x[0], enumerate(pressures))))
-	
-	print('1', dfs(start, l, 30))
-	print('2', dfs2(start, l, 26))
 
+	@timer
+	@print_result
+	def exercise1():
+		return dfs(start, l, 30)
+	exercise1()
 
-# @timer
-# @print_result
-# def exercise2(arr):
-# 	pass
+	@timer
+	@print_result
+	def exercise2():
+		return dfs2(start, l, 26)
+	exercise2()
 
 def main(args=None):
 	input = init(path.dirname(__file__), inputs.read_to_str_arr, args)
@@ -76,9 +74,7 @@ def main(args=None):
 		subArr = [a[1], a[4].split("=")[1][:-1]]
 		subArr.append("".join(a[9:]).split(","))
 		arr.append(subArr)
-	# print(arr)
-	exercise(arr.copy())
-	# exercise2(arr.copy())
+	exercise(arr)
 
 if __name__ == "__main__":
 	main(argv[1:])
