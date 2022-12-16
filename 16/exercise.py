@@ -43,8 +43,8 @@ def exercise(arr):
 		for i, rr in chooseOne(rest):
 			if dist[cur][i] < time:
 				yield pressures[i] * (time - dist[cur][i] - 1) + dfs(i, rr, time - dist[cur][i] - 1)
-					
-	@lru_cache(maxsize=256000)
+
+	@lru_cache(maxsize=100000000)
 	def dfs(cur, rest, time):
 		return max(gen(cur, rest, time), default=0)
 
@@ -53,7 +53,7 @@ def exercise(arr):
 			if dist[cur][i] < time:
 				yield pressures[i] * (time - dist[cur][i] - 1) + dfs2(i, rr, time - dist[cur][i] - 1)
 
-	@lru_cache(maxsize=256000)
+	@lru_cache(maxsize=100000000)
 	def dfs2(cur, rest, time):
 		return max(gen2(cur, rest, time), default=dfs(start, rest, 26))
 
