@@ -89,8 +89,6 @@ def iterate(jets, rounds):
 				cMax = max([y for (x, y) in piece])
 				if cMax > top:
 					top = cMax
-				else:
-					top = max([y for (x,y) in R]) #update top
 
 				SR = (i, t%5, signature(R, top))
 				if SR in SEEN:
