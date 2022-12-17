@@ -62,6 +62,7 @@ def iterate(jets, rounds):
 	i = 0
 	t = 0
 	added = 0
+
 	while t < rounds:
 		piece = getPiece(t%5, top+4)
 		while True:
@@ -84,7 +85,12 @@ def iterate(jets, rounds):
 			if piece & R:
 				piece = moveUp(piece)
 				R |= piece # place
-				top = max([y for (x,y) in R]) #update top
+
+				cMax = max([y for (x, y) in piece])
+				if cMax > top:
+					top = cMax
+				else:
+					top = max([y for (x,y) in R]) #update top
 
 				SR = (i, t%5, signature(R, top))
 				if SR in SEEN:
