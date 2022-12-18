@@ -43,9 +43,9 @@ def exercise2(arr):
 	return exposed
 
 def main(args=None):
-	arr = init(path.dirname(__file__), inputs.read_to_int_tuple_arr, args)
-	exercise1(set(arr))
-	exercise2(arr.copy())
+	arr = set(init(path.dirname(__file__), inputs.read_to_int_tuple_arr, args))
+	exercise1(arr)
+	exercise2(arr)
 
 if __name__ == "__main__":
 	main(argv[1:])
