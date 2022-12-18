@@ -62,3 +62,10 @@ def binarySearch(arr, target):
 		else:
 			return m
 	return -1
+
+def adj(pos):
+    for axis in range(3):
+        for d in (-1, 1):
+            q = list(pos)
+            q[axis] += d
+            yield tuple(q)

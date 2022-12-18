@@ -69,5 +69,5 @@ def read_to_int_tuple_arr(filepath):
 	with open(filepath) as fp:
 		lines = fp.readlines()
 		for line in lines:
-			arr.append(list(map(int, re.findall(r'\d+', line))))
+			arr.append(tuple(map(int, re.findall(r'\d+', line))))
 	return arr
