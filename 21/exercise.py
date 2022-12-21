@@ -37,17 +37,12 @@ def exercise2(dict):
 
 	def solve(key):
 		val = dict[key]
-		
-		# print(key, val, len(val))
 		if len(val) == 1:
-			# if key == "humn":
-			# 	return "humn"
 			return int(val[0])
 		
 		key1, op, key2 = val
-
 		if op == "=":
-			v2 = 32853424641061
+			v2 = solve(key2)
 			v1 = solve(key1)
 			return v1 - v2
 		
@@ -62,8 +57,8 @@ def exercise2(dict):
 		else:
 			assert(False)
 	
-	lo = 1
-	hi = 1000000000000000
+	lo = 100000000000
+	hi = 10000000000000
 	while lo < hi:
 		m = (lo + hi) // 2
 		dict["humn"][0] = m
