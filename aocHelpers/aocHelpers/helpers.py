@@ -63,9 +63,24 @@ def binarySearch(arr, target):
 			return m
 	return -1
 
-def adj(pos):
-    for axis in range(3):
+def adjacent(pos):
+    for axis in range(len(pos)):
         for d in (-1, 1):
             q = list(pos)
             q[axis] += d
             yield tuple(q)
+
+from itertools import product
+def neighborsGeneral(pos):
+	dimensions = len(pos)
+	combinations = product([-1, 0, 1], repeat=dimensions)
+	for iter in combinations:
+		if not any(iter):
+			continue
+		yield tuple(sum(i) for i in zip(iter, pos))
+
+def neighbors2d(pos):
+	for r in [-1, 0, 1]:
+		for c in [-1, 0, 1]:
+			if r != 0 or c != 0:
+				yield (pos[0] + r, pos[1] + c)
