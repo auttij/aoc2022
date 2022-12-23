@@ -26,22 +26,21 @@ def moveEast(pos, elfSet):
 	newPos = set([(pos[0] + r, pos[1] + c) for r, c in d])
 	return 0 if elfSet & newPos else (pos[0], pos[1] + 1)
 
-def move(pos, elfSet, funcs):
-	for f in funcs:
-		newPos = f(pos, elfSet)
+funcs = [moveNorth, moveSouth, moveWest, moveEast]
+funcsLen = len(funcs)
+def move(pos, elfSet, funcs, fStart):
+	for f in range(funcsLen):
+		newPos = funcs[(fStart + f) % funcsLen](pos, elfSet)
 		if newPos != 0:
 			return newPos
 	return 0
 
 def draw(positions):
 	sp = set(positions)
-	minX, maxX = 99, 0
-	minY, maxY = 99, 0
-	for (y, x) in positions:
-		minX = min(x, minX)
-		maxX = max(x, maxX)
-		minY = min(y, minY)
-		maxY = max(y, maxY)
+	yList = list(map(lambda x: x[0], positions))
+	xList = list(map(lambda x: x[1], positions))
+	minY, maxY = min(yList), max(yList)
+	minX, maxX = min(xList), max(xList)
 	# print(positions, minY, minX, maxY, maxX)
 	for r in range(minY, maxY + 1):
 		row = ""
@@ -53,20 +52,19 @@ def draw(positions):
 		print(row)
 	print()
 
-
 def solve(input, part):
-	funcs = [moveNorth, moveSouth, moveWest, moveEast]
+	fStart = 0
 	positions = input
 	newPos = [-1 for i in positions]
 
 	iter = 0
 	while any(newPos):
+		seen = set()
+		dupePos = {}
 		iter += 1
 		# draw(positions)
 
 		elfSet = set(positions)
-		seen = set()
-		dupePos = {}
 		for ei, elf in enumerate(positions):
 			nei = set(neighbors(elf))
 
@@ -77,7 +75,7 @@ def solve(input, part):
 				dupePos[elf] = ei
 			else:
 				# another elf adjacent, move 
-				np = move(elf, elfSet, funcs)
+				np = move(elf, elfSet, funcs, fStart)
 				nps = set([np])
 				if np == 0:
 					# something was in the way in every direction
@@ -96,8 +94,9 @@ def solve(input, part):
 		
 		# Update new positions
 		positions = [val if val else positions[i] for i, val in enumerate(newPos)]
-		newPos = [-1 if i != 0 else i for i in newPos]
-		funcs.append(funcs.pop(0))
+		newPos = [-1 if i != 0 else 0 for i in newPos]
+		fStart += 1
+		# funcs.append(funcs.pop(0))
 
 		if part == 1 and iter == 9:
 			yList = list(map(lambda x: x[0], positions))
