@@ -13,10 +13,9 @@ def fromSnafu(num):
 def toSnafu(num):
 	b5 = []
 	while num:
-		b5.append(num % 5)
+		b5.insert(0, num % 5)
 		num //= 5
 
-	b5.reverse()
 	while any(n >= 3 for n in b5):
 		for i in range(len(b5)):
 			if b5[i] >= 3:
@@ -30,15 +29,9 @@ def exercise1(arr):
 	ans = sum((fromSnafu(i) for i in arr))
 	return toSnafu(ans)
 
-@timer
-@print_result
-def exercise2(arr):
-	pass
-
 def main(args=None):
 	arr = init(path.dirname(__file__), inputs.read_to_str_arr, args)
 	exercise1(arr.copy())
-	exercise2(arr.copy())
 
 if __name__ == "__main__":
 	main(argv[1:])
